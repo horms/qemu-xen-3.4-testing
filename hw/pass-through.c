@@ -142,6 +142,8 @@ static uint32_t pt_msgdata_reg_init(struct pt_dev *ptdev,
     struct pt_reg_info_tbl *reg, uint32_t real_offset);
 static uint32_t pt_msixctrl_reg_init(struct pt_dev *ptdev,
     struct pt_reg_info_tbl *reg, uint32_t real_offset);
+static uint32_t pt_header_type_reg_init(struct pt_dev *ptdev,
+    struct pt_reg_info_tbl *reg, uint32_t real_offset);
 static uint8_t pt_reg_grp_size_init(struct pt_dev *ptdev,
     struct pt_reg_grp_info_tbl *grp_reg, uint32_t base_offset);
 static uint8_t pt_pm_size_init(struct pt_dev *ptdev,
@@ -321,7 +323,7 @@ static struct pt_reg_info_tbl pt_emu_reg_header0_tbl[] = {
         .init_val   = 0x00,
         .ro_mask    = 0x00,
         .emu_mask   = 0xFF,
-        .init       = pt_common_reg_init,
+        .init       = pt_header_type_reg_init,
         .u.b.read   = pt_byte_reg_read,
         .u.b.write  = pt_byte_reg_write,
         .u.b.restore  = pt_byte_reg_restore,
@@ -2806,6 +2808,13 @@ static uint8_t pt_pcie_size_init(struct pt_dev *ptdev,
     }
 
     return pcie_size;
+}
+
+/* read PCI_HEADER_TYPE */
+static uint32_t pt_header_type_reg_init(struct pt_dev *ptdev,
+    struct pt_reg_info_tbl *reg, uint32_t real_offset)
+{
+    return reg->init_val | 0x80;
 }
 
 /* read byte size emulate register */
