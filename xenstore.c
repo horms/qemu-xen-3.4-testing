@@ -963,18 +963,18 @@ void xenstore_write_vncport(int display)
     free(buf);
 }
 
-void xenstore_write_vslots(char *vslots)
+void xenstore_write_vdevfns(char *vdevfns)
 {
     char *path = NULL;
     int pci_devid = 0;
 
     if (pasprintf(&path, 
-                  "/local/domain/0/backend/pci/%u/%u/vslots", domid, pci_devid) == -1) {
-        fprintf(logfile, "out of memory when updating vslots.\n");
+                  "/local/domain/0/backend/pci/%u/%u/vdevfns", domid, pci_devid) == -1) {
+        fprintf(logfile, "out of memory when updating vdevfns.\n");
         goto out;
     }
-    if (!xs_write(xsh, XBT_NULL, path, vslots, strlen(vslots)))
-        fprintf(logfile, "error updating vslots \n");
+    if (!xs_write(xsh, XBT_NULL, path, vdevfns, strlen(vdevfns)))
+        fprintf(logfile, "error updating vdevfns \n");
 
  out:
     free(path);
