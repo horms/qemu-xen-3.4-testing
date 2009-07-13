@@ -825,11 +825,11 @@ static int token_value(char *token)
     return strtol(token, NULL, 16);
 }
 
-static int next_bdf(char **str, int *seg, int *bus, int *dev, int *func,
-                    char **opt, int *vslot)
+static int parse_bdf(char **str, int *seg, int *bus, int *dev, int *func,
+                     char **opt, int *vslot)
 {
     char *token, *endptr;
-    const char *delim = ":.-";
+    const char *delim = ":.";
 
     if ( !(*str) ||
           ( !strchr(*str, ':') && !strchr(*str, '.')) )
@@ -945,7 +945,7 @@ int insert_to_pci_slot(char *bdf_slt)
     int seg, bus, dev, func, slot;
     char *opt;
 
-    if ( !next_bdf(&bdf_slt, &seg, &bus, &dev, &func, &opt, &slot) )
+    if ( !parse_bdf(&bdf_slt, &seg, &bus, &dev, &func, &opt, &slot) )
     {
         return -1;
     }
@@ -976,7 +976,7 @@ int bdf_to_slot(char *bdf_str)
     int seg, bus, dev, func, slot, i;
     char *opt;
 
-    if ( !next_bdf(&bdf_str, &seg, &bus, &dev, &func, &opt, &slot))
+    if ( !parse_bdf(&bdf_str, &seg, &bus, &dev, &func, &opt, &slot))
     {
         return -1;
     }
